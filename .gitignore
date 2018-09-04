@@ -1,0 +1,6 @@
+# Ignore these files #
+######################
+
+objs/
+avi_in/
+avi_out/

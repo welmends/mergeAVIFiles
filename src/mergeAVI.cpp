@@ -11,13 +11,13 @@ string getStrFromCmd(const char* cmd);
 vector<string> splitMovs(string allMovs);
 
 int main(){
-  string allMovs = getStrFromCmd("ls -d -rt -1 $PWD/avi/*.*");
+  string allMovs = getStrFromCmd("ls -d -rt -1 $PWD/avi_in/*.*");
   vector<string> splitedMovs = splitMovs(allMovs);
 
   Mat frame;
   VideoCapture vc;
   VideoWriter vw;
-  vw.open("merged.avi",CV_FOURCC('M','J','P','G'),6,Size(352,240),true);
+  vw.open("avi_out/merged.avi",CV_FOURCC('M','J','P','G'),6,Size(352,240),true);
 
   for(int i=0; i<(int)splitedMovs.size(); i++){
     cout<<i+1<<"/"<<splitedMovs.size()<<endl;
