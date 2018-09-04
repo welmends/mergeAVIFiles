@@ -1,4 +1,3 @@
-
 #include<iostream>
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui.hpp>
@@ -11,9 +10,26 @@ string getStrFromCmd(const char* cmd);
 vector<string> splitMovs(string allMovs);
 
 int main(){
+  //Input
+  string precaution = getStrFromCmd("[ -d ./avi_in ] && echo 'avi_in found' || echo 'avi_in not found'");
+  cout<<endl<<"----------------------------------------------------------------------------------"<<endl<<endl;
+  if(precaution == "avi_in not found\n"){
+    system("mkdir -p avi_in");
+    cerr<<"OUTPUT: You must put your avi files into avi_in folder"<<endl<<endl;
+    exit(0);
+  }
+  precaution = getStrFromCmd("ls avi_in/ -F |grep -v / | wc -l");
+  if(precaution == "0\n"){
+    cerr<<"OUTPUT: There are 0 files in avi_in"<<endl<<endl;
+    exit(0);
+  }
+
+  //Split avi files directories
   string allMovs = getStrFromCmd("ls -d -rt -1 $PWD/avi_in/*.*");
   vector<string> splitedMovs = splitMovs(allMovs);
 
+  //Merging
+  cout<<"OUTPUT: Merging avi files..."<<endl<<endl;
   Mat frame;
   VideoCapture vc;
   VideoWriter vw;
@@ -27,6 +43,7 @@ int main(){
     }
   }
   vw.release();
+  cout<<endl<<"OUTPUT: All files were merged!"<<endl<<endl;
 
   return 0;
 }
