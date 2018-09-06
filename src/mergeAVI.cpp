@@ -30,16 +30,26 @@ int main(){
 
   //Merging
   cout<<"OUTPUT: Merging avi files..."<<endl<<endl;
+  bool first = true;
   Mat frame;
   VideoCapture vc;
   VideoWriter vw;
-  vw.open("avi_out/merged.avi",CV_FOURCC('M','J','P','G'),6,Size(352,240),true);
-
+  Size fz;
   for(int i=0; i<(int)splitedMovs.size(); i++){
     cout<<i+1<<"/"<<splitedMovs.size()<<endl;
     vc = VideoCapture(splitedMovs[i]);
     while(vc.read(frame)){
-      vw.write(frame);
+      if(first){
+        vw.open("avi_out/merged.avi",CV_FOURCC('M','J','P','G'),6,frame.size(),true);
+        fz = frame.size();
+        first = false;
+      }
+      else{
+        if(frame.size()!=fz){
+          resize(frame, frame, fz);
+        }
+        vw.write(frame);
+      }
     }
   }
   vw.release();
